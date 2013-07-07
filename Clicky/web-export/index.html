@@ -48,16 +48,15 @@
 		<![endif]-->
 		<script src="processing.js" type="text/javascript"></script>
 		<script type="text/javascript">
-// convenience function to get the id attribute of generated sketch html element
-function getProcessingSketchId () { return 'Clicky'; }
-</script>
+// // convenience function to get the id attribute of generated sketch html element
+// function getProcessingSketchId () { return 'Clicky'; }
+// </script>
 
 	</head>
 	<body>
 		<div id="content">
 			<div>
-				<canvas id="Clicky" data-processing-sources="Clicky.pde" 
-						width="400" height="400">
+				<canvas id="clicky" width="400" height="400"> 
 					<p>Your browser does not support the canvas tag.</p>
 					<!-- Note: you can put any alternative content here. -->
 				</canvas>
@@ -65,6 +64,102 @@ function getProcessingSketchId () { return 'Clicky'; }
 					<p>JavaScript is required to view the contents of this page.</p>
 				</noscript>
 	    	</div>
+	    	 <script type="application/processing" data-processing-target="clicky">
+
+
+
+	    	 //Variables for timer
+int time;
+int wait = 1000;
+int counter=0;       //counter is the Timer
+
+//Audio environment
+// Maxim maxim;
+// AudioPlayer player;
+
+int score=0;   //Keeps track of number of clicks
+PFont f;       //Font to display
+
+PImage i1,i2;
+
+int currentPosition=1;
+
+void setup(){
+      size(400,400);
+      
+      f = loadFont( "AgencyFB-Reg-25.vlw" ); //loads font 
+      /* @pjs preload="button_0.jpg,button_1.jpg"; */
+      i1=loadImage("button_0.jpg");
+      i2=loadImage("button_1.jpg");
+      
+      // maxim = new Maxim(this);// creates new audio environment
+      // player = maxim.loadFile("music.wav");//creates audio player
+      // player.setLooping(true);
+      // player.volume(0.25);
+      // player.cue(0);
+      // player.play();
+}
+
+
+void draw(){
+
+    
+    if(currentPosition==1)
+       image(i1, 0, 0);
+    if(currentPosition==2)
+       image(i2, 0, 0);
+
+    textFont(f,16); 
+    fill(0);        
+    text ( "Time :",width*1/32,15); 
+    text (counter,(width*1/32)+60,15);
+    text ( "Score :",width*3/4,15); 
+    text (score,width*3/4+60,15);
+    text ( "CLICK ME!!!",(width/2)-20,height/2); 
+
+    clock();     //Clock function counts one second
+    if(counter>10){
+       text ("You Scored :",(width/2)-20,height/2+40); 
+       text(score,(width/2)+60,height/2+40);
+       saveFrame("User-######.png"); 
+       delay(2000);
+       exit();
+    }
+}
+
+
+void clock(){
+      if(millis() - time >= wait)
+      {
+          counter++;
+          time = millis();
+      }
+}
+
+void mousePressed(){
+     currentPosition=2;
+}
+
+void mouseReleased(){
+     currentPosition=1;
+}
+
+int x,y;
+void mouseClicked(){
+     x=mouseX;y=mouseY;
+     if(dist(x,y,width/2,height/2)<(width/2-10)){
+         score++;
+     }
+}
+
+
+
+
+
+
+
+
+			</script>
 			<h1>Clicky</h1>
     		<p id="description"></p>
 			<p id="sources">Source code: <a href="Clicky.pde">Clicky</a> </p>
